@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package google.protobuf;
+
+import "google/protobuf/any.proto";
+
+option java_package = "com.tt.message.proto";
+option java_outer_classname = "WorldMessageProto";
+option java_multiple_files = true;
+
+// 位置信息
+message VectorProto {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+enum GameObjType {
+  PLAYER = 0;
+  NPC = 1;
+}
+
+// 游戏对象基本信息
+message GameObjInfo {
+  int64 id = 1;
+  // 位置
+  VectorProto position = 2;
+  // 朝向
+  float toward = 3;
+  // 类型
+  GameObjType type = 4;
+  // 扩展信息
+  Any typeExtendInfo = 5;
+  // 是否移动到新灯塔，客户端可能收到两个同样对象，以这个字段为false的为准
+  bool moveToOtherTower = 6;
+}
+
+// 修改位置
+message ChangePosition {
+  int64 id = 1;
+  // 位置
+  VectorProto position = 2;
+  // 朝向
+  float toward = 3;
+}
+
+message PlayerObjInfo {
+  int64 uid = 1;
+  string name = 2;
+}
+
+// 地图对象进入视野
+message SomeObjEnterViewMessage {
+  repeated GameObjInfo objs = 1;
+}
+
+// 地图对象退出视野
+message SomeObjQuitView {
+  repeated int64 ids = 1;
+}

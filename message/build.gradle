@@ -1,0 +1,35 @@
+plugins {
+    id 'java-library'
+    id 'com.google.protobuf' version '0.8.18'
+}
+
+group 'com.tt'
+
+dependencies {
+    api 'com.google.protobuf:protobuf-java:4.0.0-rc-2'
+    api project(":annoprocessor")
+    api project(":anno")
+    annotationProcessor(project(":annoprocessor"))
+    protobuf files('proto/')
+}
+
+protobuf {
+    protoc {
+        // The artifact spec for the Protobuf Compiler
+        artifact = 'com.google.protobuf:protoc:4.0.0-rc-2'
+    }
+
+    generatedFilesBaseDir = "$projectDir/src/generate/"
+}
+
+jar {
+    exclude '*.proto'
+}
+
+clean {
+    delete protobuf.generatedFilesBaseDir
+}
+
+test {
+    useJUnitPlatform()
+}

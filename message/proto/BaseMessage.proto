@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package google.protobuf;
+
+option java_package = "com.tt.message.proto";
+option java_outer_classname = "BaseMessageProto";
+option java_multiple_files = true;
+
+message Int {
+  int32 value = 1;
+}
+
+message LongMsg {
+  int64 value = 1;
+}
+
+// 防止和java.lang.String重名
+message StringMsg {
+  string value = 1;
+}
+
+message FloatMsg {
+  float value = 1;
+}
+
+message IntArray {
+  repeated int32 value = 1;
+}
+
+message LongArray {
+  repeated int64 value = 1;
+}
+
+message StringArray {
+  repeated string value = 1;
+}
+
+message FloatArray {
+  repeated float value = 1;
+}
+
+enum ResultCode {
+  // 成功
+  SUCCESS = 0;
+  // 不可达
+  MOVE_UNREACHABLE = 1;
+}

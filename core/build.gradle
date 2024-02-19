@@ -1,0 +1,28 @@
+plugins {
+    id 'java-library'
+}
+
+group = 'com.tt'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api project(':message')
+    api 'org.reflections:reflections:0.10.2'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

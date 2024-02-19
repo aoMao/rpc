@@ -1,0 +1,17 @@
+group = 'com.tt'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":core")
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

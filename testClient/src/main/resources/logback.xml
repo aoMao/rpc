@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="1 seconds">
+
+    <property name="LOG_HOME" value="log"/>
+    <property name="pattern_str" value="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p ${PID:- } --- [%22.22t] %-40.40logger{39} : %m%n"/>
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>${pattern_str}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 过滤掉 TRACE 和 DEBUG 级别的日志-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <appender name="InfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_HOME}/testClient-%d{yyyy-MM-dd}.%i.info.log</fileNamePattern>
+            <!-- 每个文件最多5MB，保存60天的历史记录，但最多20GB -->
+            <maxFileSize>5MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+        <!-- 过滤掉 TRACE 和 DEBUG 级别的日志-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+
+        <encoder>
+            <pattern>${pattern_str}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="ErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_HOME}/testClient-%d{yyyy-MM-dd}.%i.error.log</fileNamePattern>
+            <!-- 每个文件最多5MB，保存60天的历史记录，但最多20GB -->
+            <maxFileSize>5MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+        <!-- 过滤掉 TRACE 和 DEBUG 级别的日志-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <encoder>
+            <pattern>${pattern_str}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--root是默认的logger 这里设定输出级别是debug-->
+    <root level="INFO">
+        <!--定义了两个appender，日志会通过往这两个appender里面写-->
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="InfoLog"/>
+        <appender-ref ref="ErrorLog"/>
+    </root>
+</configuration>

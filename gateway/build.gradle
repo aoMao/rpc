@@ -1,0 +1,13 @@
+group 'com.tt'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":core")
+}
+
+test {
+    useJUnitPlatform()
+}

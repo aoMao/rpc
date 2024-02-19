@@ -1,0 +1,9 @@
+group 'com.tt'
+
+dependencies {
+    implementation project(":core")
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

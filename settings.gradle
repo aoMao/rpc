@@ -1,0 +1,11 @@
+rootProject.name = 'rpc'
+include 'annoprocessor'
+include 'message'
+include 'core'
+include 'testClient'
+include 'gateway'
+include 'RegisterCenter'
+include 'anno'
+include 'RpcCallerTest'
+include 'RpcProviderTest'
+
