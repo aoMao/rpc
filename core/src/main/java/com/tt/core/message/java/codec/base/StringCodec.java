@@ -12,6 +12,9 @@ public class StringCodec implements IJavaTypeCodec<String> {
     @SuppressWarnings("ConstantConditions")
     public String decode(ByteBuf buf) {
         int length = JavaCodecUtil.readValue(buf, int.class);
+        if (length == 0) {
+            return null;
+        }
         byte[] data = new byte[length];
         buf.readBytes(data);
         return new String(data, StandardCharsets.UTF_8);
@@ -27,6 +30,9 @@ public class StringCodec implements IJavaTypeCodec<String> {
 
     @Override
     public byte[] encode(String value) {
+        if (value == null) {
+            return JavaCodecUtil.INT_0_BYTES;
+        }
         byte[] data = value.getBytes(StandardCharsets.UTF_8);
         byte[] lengthData = JavaCodecUtil.encodeValue(data.length);
         byte[] result = new byte[data.length + lengthData.length];

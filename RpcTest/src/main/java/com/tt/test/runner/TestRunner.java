@@ -16,12 +16,12 @@ public class TestRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Thread.sleep(5000);
+        Thread.sleep(1000);
 
-        for (int i = -10; i < 12; i++) {
-            String s = test1.strTest(i);
-            System.out.println(s);
-        }
+//        for (int i = -10; i < 12; i++) {
+//            String s = test1.strTest(i);
+//            System.out.println(s);
+//        }
 
         for (int i = -10; i < 12; i++) {
             test1.asyncTest(i).whenComplete((r, t) -> {

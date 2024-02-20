@@ -26,6 +26,7 @@ public class RpcMessageTransfer extends RpcMsgDecoder {
     public void handlerEntryNotFound(Channel channel, int msgEntryId, ByteBuf in, int length) {
         long msgSeq = in.readLong();
         int queueKey = in.readInt();
+        log.info("transfer msg id : {}, length : {}, msgSeq : {}, queueKey : {}", in, length, msgSeq, queueKey);
         // 当前连接
         var curSession = sessionManager.getSession(channel);
         // 目标连接
@@ -36,15 +37,15 @@ public class RpcMessageTransfer extends RpcMsgDecoder {
             return;
         }
         // 直接发送
-        var compositeBuf = new CompositeByteBuf(in.alloc(), in.isDirect(), in.writableBytes() - 8);
+        var compositeBuf = new CompositeByteBuf(in.alloc(), in.isDirect(), in.capacity());
         var headBuf = in.alloc().buffer();
         headBuf.writeInt(msgEntryId);
         headBuf.writeInt(length);
         // 以便返回结果处理
         headBuf.writeLong(msgSeq);
         headBuf.writeInt(curSession.getServerId());
-        compositeBuf.addComponent(headBuf);
-        compositeBuf.addComponent(in.copy());
+        compositeBuf.addComponent(true, headBuf);
+        compositeBuf.addComponent(true, in.copy());
         toSession.writeAndFlush(compositeBuf);
         in.skipBytes(length);
     }

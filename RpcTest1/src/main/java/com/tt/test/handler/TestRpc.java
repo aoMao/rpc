@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 public class TestRpc implements ITest1 {
 
     static final String[] arr = new String[10];
+
     static {
         for (int i = 0; i < 10; i++) {
             arr[i] = String.valueOf(i);

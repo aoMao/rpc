@@ -58,4 +58,20 @@ public class ReflectionUtil {
         }
         return t;
     }
+
+    /**
+     * 如果是parameterizedType類型，并且parameterizedType.rawType和clz相等，返回第一個參數
+     *
+     * @param type
+     * @param clz
+     * @return
+     */
+    public static Type getTypeOrFirstParamType(Type type, Class<?> clz) {
+        if (type instanceof ParameterizedType parameterizedType) {
+            if (parameterizedType.getRawType().equals(clz)) {
+                return parameterizedType.getActualTypeArguments()[0];
+            }
+        }
+        return type;
+    }
 }

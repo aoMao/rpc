@@ -2,3 +2,7 @@ server:
   self:
     ip: 127.0.0.1
     port: 29001
+
+spring:
+  aop:
+    proxy-target-class: false

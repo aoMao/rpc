@@ -3,6 +3,7 @@ package com.tt.core.message;
 import com.tt.anno.RpcQueueKey;
 import com.tt.core.net.handler.queuekey.DefaultRpcQueueKeyAlgo;
 import com.tt.core.net.handler.queuekey.IRpcQueueKeyAlgo;
+import com.tt.core.net.proxy.RpcRequestProxy;
 import com.tt.core.util.ReflectionUtil;
 import com.tt.message.anno.LoadBalance;
 import com.tt.message.constant.LBType;
@@ -25,6 +26,7 @@ public class MessageEntry {
     private final Class<? extends IRpcQueueKeyAlgo> rpcQueueAlgoClz;
     private final boolean async;
     private final boolean resultMsg;
+    private final boolean canDeal;
 
     @SuppressWarnings("unchecked")
     public MessageEntry(int id, Method method, Object instance, boolean resultMsg) {
@@ -32,7 +34,11 @@ public class MessageEntry {
         this.method = method;
         this.instance = instance;
         methodName = method.getName();
-        paramClzArray = method.getGenericParameterTypes();
+        if (resultMsg) {
+            paramClzArray = new Type[]{ReflectionUtil.getTypeOrFirstParamType(method.getGenericReturnType(), CompletableFuture.class)};
+        } else {
+            paramClzArray = method.getGenericParameterTypes();
+        }
         if (resultMsg) {
             this.lbType = LBType.SERVER_ID;
         } else {
@@ -48,6 +54,7 @@ public class MessageEntry {
         }
         async = CompletableFuture.class.isAssignableFrom(method.getReturnType());
         this.resultMsg = resultMsg;
+        canDeal = instance != null && !(instance instanceof Proxy && Proxy.getInvocationHandler(instance) instanceof RpcRequestProxy);
     }
 
     public int getId() {
@@ -87,6 +94,6 @@ public class MessageEntry {
     }
 
     public boolean canDeal() {
-        return instance != null && !(instance instanceof Proxy);
+        return canDeal;
     }
 }

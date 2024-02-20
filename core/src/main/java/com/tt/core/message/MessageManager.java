@@ -3,6 +3,7 @@ package com.tt.core.message;
 import com.tt.anno.processor.MessageIdGenerateConstProcessor;
 import com.tt.message.anno.Message;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -68,7 +69,7 @@ public class MessageManager {
     }
 
     private void registerOneInterface(Class<?> interfaceClz, Object instance) throws Exception {
-        Message message = interfaceClz.getAnnotation(Message.class);
+        Message message = AnnotationUtils.findAnnotation(interfaceClz, Message.class);
         if (message == null) {
             return;
         }

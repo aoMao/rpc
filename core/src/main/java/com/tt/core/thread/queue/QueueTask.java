@@ -33,7 +33,9 @@ public abstract class QueueTask implements Runnable {
     }
 
     public void afterTaskRunEnd() {
-        executor.afterTaskRunEnd();
+        if (executor != null) {
+            executor.afterTaskRunEnd();
+        }
     }
 
     public void setExecutor(QueueExecutor executor) {

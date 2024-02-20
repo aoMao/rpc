@@ -16,6 +16,7 @@ import com.tt.message.rpc.IRpc;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,19 +25,14 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfig {
 
     private MessageManager messageManager;
-    private ServerInfoConfig serverInfoConfig;
     private RpcResultProxy rpcResultProxy;
+
+    @Value("${server.self.id}")
+    private int serverId;
 
     @Bean
     public ServerInfoConfig serverInfoConfig() {
-        if (serverInfoConfig == null) {
-            synchronized (this) {
-                if (serverInfoConfig == null) {
-                    serverInfoConfig = new ServerInfoConfig(ServerType.RPC_CALLER);
-                }
-            }
-        }
-        return serverInfoConfig;
+        return new ServerInfoConfig(ServerType.RPC_CALLER);
     }
 
     @Bean
@@ -87,12 +83,10 @@ public class BeanConfig {
     @Bean
     public CustomBeanDefinitionRegistryPostProcessor postProcessor() {
         MessageManager messageManager = messageManager();
-        ServerInfoConfig serverInfoConfig = serverInfoConfig();
-        return new CustomBeanDefinitionRegistryPostProcessor(messageManager.getAllMsgClz(), RpcRequestProxyFactoryBean.class,
-                messageManager, serverInfoConfig.getServerInfo().getId());
+        return new CustomBeanDefinitionRegistryPostProcessor(messageManager.getAllMsgClz(), RpcRequestProxyFactoryBean.class, messageManager);
     }
 
-    @AfterReturning(returning = "result", pointcut = "execution(* com.tt.test.handler.*.*(..))")
+    @AfterReturning(returning = "result", pointcut = "execution(* com.tt.test.handler..*.*(..))")
     public void afterReturn(JoinPoint point, Object result) {
         rpcResultProxy().rpcSendResult(point, result);
     }

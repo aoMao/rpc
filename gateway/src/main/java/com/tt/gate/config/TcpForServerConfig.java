@@ -8,7 +8,6 @@ import com.tt.core.thread.queue.IQueueExecutor;
 import com.tt.gate.netty.codec.RpcMessageTransfer;
 import com.tt.message.rpc.IRpc;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,16 +22,14 @@ public class TcpForServerConfig {
     @Autowired
     private SessionManager sessionManager;
     @Autowired
-    @Qualifier(value = "messageManager")
     private MessageManager messageManager;
     @Autowired
     private IQueueExecutor executorManager;
     @Autowired
-    private List<IRpc> messageList;
+    private List<IRpc> rpcList;
 
     @Bean(name = "tcpServer")
     public TcpServer tcpServer() throws Exception {
-        var messageManager = new MessageManager();
         registerMsg(messageManager);
         var rpcMessageTransfer = new RpcMessageTransfer(messageManager, sessionManager);
         return (TcpServer) new TcpServer(serverPort).sessionManager(sessionManager)
@@ -42,12 +39,12 @@ public class TcpForServerConfig {
     }
 
     private void registerMsg(MessageManager messageManager) throws Exception {
-        for (IRpc message : messageList) {
+        for (IRpc rpc : rpcList) {
             // 代理的不进行注入
-            if (message instanceof RpcRequestProxy) {
+            if (rpc instanceof RpcRequestProxy) {
                 return;
             }
-            messageManager.registerMsg(message);
+            messageManager.registerMsg(rpc);
         }
     }
 }

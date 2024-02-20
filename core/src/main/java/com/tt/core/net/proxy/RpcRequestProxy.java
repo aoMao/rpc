@@ -22,11 +22,10 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RpcRequestProxy extends BaseMessageProxy {
 
-    private final int serverId;
+    private int serverId;
 
-    public RpcRequestProxy(MessageManager messageManager, int serverId) {
+    public RpcRequestProxy(MessageManager messageManager) {
         super(messageManager);
-        this.serverId = serverId;
     }
 
     @Override
@@ -55,8 +54,9 @@ public class RpcRequestProxy extends BaseMessageProxy {
         RpcMsg msg = new RpcMsg(entry, IDUtil.generateId(serverId), queueKey, args);
         // 每次重新获取
         Session session = getSession(msg);
-        CompletableFuture<?> future = RpcFutureManager.getInstance().addFuture(IDUtil.generateId(serverId), waitTime, unit);
+        CompletableFuture<?> future = RpcFutureManager.getInstance().addFuture(msg.getMsgSeq(), waitTime, unit);
         session.writeAndFlush(msg);
+        log.info("send request msg : {}", msg);
         return future;
     }
 
@@ -68,5 +68,9 @@ public class RpcRequestProxy extends BaseMessageProxy {
      */
     protected Session getSession(RpcMsg msg) {
         return GateLbManager.getInstance().getSession(msg);
+    }
+
+    public void setServerId(int serverId) {
+        this.serverId = serverId;
     }
 }

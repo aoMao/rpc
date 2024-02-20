@@ -1,6 +1,7 @@
 package com.tt.gate.handler.server;
 
 import com.tt.core.net.session.Session;
+import com.tt.core.net.session.SessionManager;
 import com.tt.core.net.util.SessionThreadLocalUtil;
 import com.tt.core.server.config.ServerInfoConfig;
 import com.tt.gate.lb.LoadBalanceManager;
@@ -19,11 +20,14 @@ public class RegisterGate implements IRegisterGate {
 
     @Autowired
     ServerInfoConfig serverInfoConfig;
+    @Autowired
+    SessionManager sessionManager;
 
     @Override
     public CompletableFuture<ServerInfo> register(ServerInfo serverInfo) {
         Session session = SessionThreadLocalUtil.getSession();
         session.setServerInfo(serverInfo);
+        sessionManager.registerServerSession(session);
         LoadBalanceManager.getInstance().addServerSession(session);
         return CompletableFuture.completedFuture(serverInfoConfig.getServerInfo());
     }

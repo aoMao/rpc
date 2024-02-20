@@ -1,6 +1,9 @@
 package com.tt.core.net.server;
 
-import com.tt.core.net.handler.*;
+import com.tt.core.net.handler.ActiveHandler;
+import com.tt.core.net.handler.MsgDecoder;
+import com.tt.core.net.handler.RpcDispatchHandler;
+import com.tt.core.net.handler.RpcMsgEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -54,7 +57,7 @@ public class TcpServer extends AbstractServer<ServerBootstrap> {
                 p.addLast(new LengthFieldBasedFrameDecoder(16 * 1024 * 1024, 4, 4, 12, 0));
                 p.addLast(new ActiveHandler(sessionManager, newSessionConnectConsumer));
                 p.addLast(new RpcMsgEncoder());
-                p.addLast(new MsgDecoder(new RpcMsgDecoder(messageManager)));
+                p.addLast(new MsgDecoder(customMsgDecoder));
                 p.addLast(new RpcDispatchHandler(executor, sessionManager));
             }
         };

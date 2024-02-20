@@ -38,7 +38,8 @@ public class RpcFutureManager {
         if (futureMap.containsKey(id)) {
             throw new RpcIdSameException("rpc is is same, maybe msg is too more, id" + id);
         }
-        var future = new CompletableFuture().orTimeout(timeout, unit).whenComplete((r, t) -> {
+        var future = new CompletableFuture();
+        future.orTimeout(timeout, unit).whenComplete((r, t) -> {
             // 报异常之后删除
             if (t != null) {
                 remove(id);

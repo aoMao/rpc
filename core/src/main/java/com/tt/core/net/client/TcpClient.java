@@ -1,6 +1,9 @@
 package com.tt.core.net.client;
 
-import com.tt.core.net.handler.*;
+import com.tt.core.net.handler.ActiveHandler;
+import com.tt.core.net.handler.MsgDecoder;
+import com.tt.core.net.handler.RpcDispatchHandler;
+import com.tt.core.net.handler.RpcMsgEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -33,7 +36,7 @@ public class TcpClient extends AbstractClient {
                 p.addLast(new LengthFieldBasedFrameDecoder(16 * 1024 * 1024, 4, 4, 12, 0));
                 p.addLast(new ActiveHandler(sessionManager, connectSuccessConsumer));
                 p.addLast(new RpcMsgEncoder());
-                p.addLast(new MsgDecoder(new RpcMsgDecoder(messageManager)));
+                p.addLast(new MsgDecoder(customMsgDecoder));
                 p.addLast(new RpcDispatchHandler(executor, sessionManager));
             }
         };

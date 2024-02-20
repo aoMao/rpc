@@ -4,3 +4,7 @@ server:
     port: 29000
     id: 1
     listenTypes:
+
+spring:
+  aop:
+    proxy-target-class: false

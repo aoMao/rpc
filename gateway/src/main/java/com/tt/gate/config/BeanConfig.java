@@ -7,10 +7,12 @@ import com.tt.core.server.config.ServerInfoConfig;
 import com.tt.core.thread.queue.CurTaskExecutor;
 import com.tt.core.thread.queue.IQueueExecutor;
 import com.tt.message.constant.ServerType;
-import com.tt.message.rpc.IRpc;
+import com.tt.message.rpc.gate.IGateRpc;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Aspect
 @Configuration
 public class BeanConfig {
 
@@ -37,7 +39,7 @@ public class BeanConfig {
             synchronized (this) {
                 if (messageManager == null) {
                     messageManager = new MessageManager();
-                    var clzSet = MessageUtil.getMessageClzSet(IRpc.class);
+                    var clzSet = MessageUtil.getMessageClzSet(IGateRpc.class);
                     try {
                         messageManager.registerMsg(clzSet);
                     } catch (Exception e) {
@@ -48,6 +50,4 @@ public class BeanConfig {
         }
         return messageManager;
     }
-
-
 }

@@ -12,7 +12,8 @@ public class RpcFixSessionProxy extends RpcRequestProxy {
     private final Session session;
 
     public RpcFixSessionProxy(MessageManager messageManager, int serverId, Session session) {
-        super(messageManager, serverId);
+        super(messageManager);
+        setServerId(serverId);
         this.session = session;
     }
 

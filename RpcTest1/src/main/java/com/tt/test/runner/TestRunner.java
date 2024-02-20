@@ -16,9 +16,7 @@ public class TestRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
-        Thread.sleep(5000);
-
+        Thread.sleep(1000);
         boolean hello = test.sayHello("hello");
         System.out.println(hello);
     }

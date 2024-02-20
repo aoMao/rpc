@@ -28,11 +28,19 @@ public class EnumCodec extends BaseReferenceCodec<Enum> {
 
     @Override
     public int encode(Enum value, ByteBuf buf) {
+        if (value == null) {
+            buf.writeBytes(JavaCodecUtil.INT_0_BYTES);
+            return JavaCodecUtil.INT_0_BYTES.length;
+        }
         return JavaCodecUtil.writeValue(buf, value.ordinal());
     }
 
     @Override
     public byte[] encode(Enum value) {
+        // 这里可能会有错误，空的时候传默认的0
+        if (value == null) {
+            return JavaCodecUtil.INT_0_BYTES;
+        }
         return JavaCodecUtil.encodeValue(value.ordinal());
     }
 

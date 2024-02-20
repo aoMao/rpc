@@ -14,7 +14,9 @@ public class SessionManager extends AbstractSessionManager {
 
     public SessionManager() {
         addRemoveFunction((session -> {
-            serverNetSessionMap.remove(session.getServerId());
+            if (session.getServerInfo() != null) {
+                serverNetSessionMap.remove(session.getServerId());
+            }
         }));
     }
 
@@ -25,7 +27,6 @@ public class SessionManager extends AbstractSessionManager {
 
     public void registerServerSession(Session session) {
         serverNetSessionMap.put(session.getServerId(), session);
-        super.registerSession(session);
     }
 
     public Session getSessionByServerId(int serverId) {

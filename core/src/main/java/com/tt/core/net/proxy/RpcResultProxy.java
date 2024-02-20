@@ -42,6 +42,7 @@ public class RpcResultProxy {
         // 直接使用当前session即可
         Session session = SessionThreadLocalUtil.getSession();
         session.writeAndFlush(msg);
+        log.info("send result msg : {}", msg);
         return result;
     }
 }

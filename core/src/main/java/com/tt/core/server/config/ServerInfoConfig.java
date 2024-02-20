@@ -11,7 +11,7 @@ public class ServerInfoConfig {
 	private int port;
 	@Value("${server.self.listenTypes}")
 	private ServerType[] listenTypes;
-	private ServerType serverType;
+	private final ServerType serverType;
 	@Value("${server.self.id}")
 	private int id;
 

@@ -22,10 +22,10 @@ public class MessageIdStartConst {
     /**
      * 测试
      */
-    public static final int TEST = 10000;
+    public static final int TEST = 20000;
 
     /**
      * 测试
      */
-    public static final int TEST_1 = 10000;
+    public static final int TEST_1 = 30000;
 }

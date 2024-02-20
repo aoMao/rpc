@@ -33,6 +33,8 @@ public class GateConfig {
     @Value("${gate.server.list}")
     private String gateList;
 
+    @Value("${server.self.id}")
+    int serverId;
     @Autowired
     ServerInfoConfig serverInfoConfig;
     @Autowired
@@ -62,7 +64,6 @@ public class GateConfig {
                     .sessionManager(sessionManager)
                     .customMsgDecoder(new RpcMsgDecoder(messageManager))
                     .executor(executor).customConnectSuccessConsumer(session -> {
-                        int serverId = serverInfoConfig.getServerInfo().getId();
                         IRegisterGate gate = (IRegisterGate) Proxy.newProxyInstance(IRegisterGate.class.getClassLoader(),
                                 new Class[]{IRegisterGate.class}, new RpcFixSessionProxy(messageManager, serverId, session));
                         CompletableFuture<ServerInfo> register = gate.register(serverInfoConfig.getServerInfo());
@@ -73,6 +74,7 @@ public class GateConfig {
                                 session.close();
                                 return;
                             }
+                            log.info("register gate resp : {}", serverInfo);
                             if (serverInfo != null) {
                                 session.setServerInfo(serverInfo);
                                 GateLbManager.getInstance().addServerSession(session);
@@ -85,7 +87,8 @@ public class GateConfig {
 
     private void buildCanDealMsg() throws Exception {
         for (IRpc iRpc : iRpcs) {
-            if (iRpc instanceof RpcRequestProxy) {
+            if (iRpc instanceof Proxy && Proxy.getInvocationHandler(iRpc) instanceof RpcRequestProxy proxy) {
+                proxy.setServerId(serverId);
                 continue;
             }
             messageManager.registerMsg(iRpc);
@@ -95,9 +98,8 @@ public class GateConfig {
         for (MessageEntry messageEntry : messageManager.getAllMsgEntry()) {
             if (messageEntry.canDeal()) {
                 serverInfo.getCanDealMsgIds().add(messageEntry.getId());
-            } else {
-                serverInfo.getMsgIdToLBTypeMap().put(messageEntry.getId(), messageEntry.lbType());
             }
+            serverInfo.getMsgIdToLBTypeMap().put(messageEntry.getId(), messageEntry.lbType());
         }
     }
 }
