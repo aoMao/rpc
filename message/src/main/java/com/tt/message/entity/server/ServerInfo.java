@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +23,8 @@ public class ServerInfo {
     private String ip;
     private int port;
     private ServerType[] listenTypes;
-    Map<Integer, LBType> msgIdToLBTypeMap;
-    List<Integer> canDealMsgIds;
+    Map<Integer, LBType> msgIdToLBTypeMap = new HashMap<>();
+    List<Integer> canDealMsgIds = new ArrayList<>();
 
     public ServerInfo(ServerType serverType, String ip, int port, ServerType[] listenTypes) {
         this.serverType = serverType;

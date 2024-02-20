@@ -12,6 +12,8 @@ public class ServerInfoConfig {
 	@Value("${server.self.listenTypes}")
 	private ServerType[] listenTypes;
 	private ServerType serverType;
+	@Value("${server.self.id}")
+	private int id;
 
 	private ServerInfo serverInfo;
 
@@ -36,6 +38,7 @@ public class ServerInfoConfig {
 			synchronized (this) {
 				if (serverInfo == null) {
 					serverInfo = new ServerInfo(serverType, ip, port, listenTypes);
+					serverInfo.setId(id);
 				}
 			}
 		}

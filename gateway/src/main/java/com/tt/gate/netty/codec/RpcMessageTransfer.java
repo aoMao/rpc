@@ -3,7 +3,7 @@ package com.tt.gate.netty.codec;
 import com.tt.core.message.MessageManager;
 import com.tt.core.net.handler.RpcMsgDecoder;
 import com.tt.core.net.session.SessionManager;
-import com.tt.core.lb.LoadBalanceManager;
+import com.tt.gate.lb.LoadBalanceManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.CompositeByteBuf;
 import io.netty.channel.Channel;

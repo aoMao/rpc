@@ -1,15 +1,13 @@
 package com.tt.gate.config;
 
 import com.tt.core.message.MessageManager;
-import com.tt.core.net.proxy.CustomBeanDefinitionRegistryPostProcessor;
 import com.tt.core.net.session.SessionManager;
 import com.tt.core.net.util.MessageUtil;
-import com.tt.core.server.RCClient;
 import com.tt.core.server.config.ServerInfoConfig;
 import com.tt.core.thread.queue.CurTaskExecutor;
 import com.tt.core.thread.queue.IQueueExecutor;
 import com.tt.message.constant.ServerType;
-import com.tt.message.rpc.rc.IRcRpc;
+import com.tt.message.rpc.IRpc;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,11 +19,6 @@ public class BeanConfig {
     @Bean
     public ServerInfoConfig serverInfoConfig() {
         return new ServerInfoConfig(ServerType.GATE);
-    }
-
-    @Bean
-    public RCClient rcClient() {
-        return new RCClient();
     }
 
     @Bean
@@ -44,7 +37,7 @@ public class BeanConfig {
             synchronized (this) {
                 if (messageManager == null) {
                     messageManager = new MessageManager();
-                    var clzSet = MessageUtil.getMessageClzSet(IRcRpc.class);
+                    var clzSet = MessageUtil.getMessageClzSet(IRpc.class);
                     try {
                         messageManager.registerMsg(clzSet);
                     } catch (Exception e) {

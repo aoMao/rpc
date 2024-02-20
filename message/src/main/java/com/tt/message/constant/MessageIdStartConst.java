@@ -15,12 +15,17 @@ public class MessageIdStartConst {
     public static final int HEART_RESP = 9100;
 
     /**
-     * 登录请求
+     * gate
      */
-    public static final int LOGIN_REQ = 10000;
+    public static final int GATE = 10000;
 
     /**
-     * 登录回复
+     * 测试
      */
-    public static final int LOGIN_RESP = 11000;
+    public static final int TEST = 10000;
+
+    /**
+     * 测试
+     */
+    public static final int TEST_1 = 10000;
 }

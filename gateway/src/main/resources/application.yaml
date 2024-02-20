@@ -1,15 +1,6 @@
 server:
   self:
     ip: 127.0.0.1
-    port: 9000
-    type: GATE
-    listenTypes: RPC_CALLER,RPC_PROVIDER
-client:
-  tcp:
-    port: 7000
-  kcp:
-    port: 7001
-rc:
-  server:
-    ip: 127.0.0.1
-    port: 8181
+    port: 29000
+    id: 1
+    listenTypes:

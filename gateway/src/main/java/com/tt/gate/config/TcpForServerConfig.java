@@ -1,6 +1,7 @@
 package com.tt.gate.config;
 
 import com.tt.core.message.MessageManager;
+import com.tt.core.net.proxy.RpcRequestProxy;
 import com.tt.core.net.server.TcpServer;
 import com.tt.core.net.session.SessionManager;
 import com.tt.core.thread.queue.IQueueExecutor;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.lang.reflect.Proxy;
 import java.util.List;
 
 @Configuration
@@ -30,8 +30,8 @@ public class TcpForServerConfig {
     @Autowired
     private List<IRpc> messageList;
 
-    @Bean(name = "gateForServerTcpServer")
-    public TcpServer gateForServerTcpServer() throws Exception {
+    @Bean(name = "tcpServer")
+    public TcpServer tcpServer() throws Exception {
         var messageManager = new MessageManager();
         registerMsg(messageManager);
         var rpcMessageTransfer = new RpcMessageTransfer(messageManager, sessionManager);
@@ -44,7 +44,7 @@ public class TcpForServerConfig {
     private void registerMsg(MessageManager messageManager) throws Exception {
         for (IRpc message : messageList) {
             // 代理的不进行注入
-            if (message instanceof Proxy) {
+            if (message instanceof RpcRequestProxy) {
                 return;
             }
             messageManager.registerMsg(message);

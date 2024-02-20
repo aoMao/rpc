@@ -1,7 +1,7 @@
 package com.tt.core.net.proxy;
 
 import com.tt.anno.TimeOut;
-import com.tt.core.lb.LoadBalanceManager;
+import com.tt.core.gatelb.GateLbManager;
 import com.tt.core.message.MessageEntry;
 import com.tt.core.message.MessageManager;
 import com.tt.core.net.handler.queuekey.IRpcQueueKeyAlgo;
@@ -67,6 +67,6 @@ public class RpcRequestProxy extends BaseMessageProxy {
      * @return
      */
     protected Session getSession(RpcMsg msg) {
-        return LoadBalanceManager.getInstance().getNetSession(null, msg.getEntry().lbType(), msg.getEntry().getId(), msg.getQueueKey());
+        return GateLbManager.getInstance().getSession(msg);
     }
 }

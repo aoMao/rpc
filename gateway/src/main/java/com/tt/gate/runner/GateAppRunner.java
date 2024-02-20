@@ -1,7 +1,6 @@
 package com.tt.gate.runner;
 
-import com.tt.core.server.RCClient;
-import com.tt.gate.handler.server.RegisterGate;
+import com.tt.core.net.server.TcpServer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -15,13 +14,11 @@ import org.springframework.stereotype.Component;
 public class GateAppRunner implements ApplicationRunner {
 
     @Autowired
-    private RCClient rcClient;
-    @Autowired
-    private RegisterGate registerGate;
+    private TcpServer tcpServer;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        rcClient.register();
-        System.out.println(registerGate);
+        tcpServer.start();
+        log.info("server start on port : {} success", tcpServer.getPort());
     }
 }

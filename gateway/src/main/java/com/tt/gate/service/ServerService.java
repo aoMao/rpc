@@ -1,6 +1,6 @@
 package com.tt.gate.service;
 
-import com.tt.core.lb.LoadBalanceManager;
+import com.tt.gate.lb.LoadBalanceManager;
 import com.tt.core.net.session.Session;
 import org.springframework.stereotype.Component;
 
