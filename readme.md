@@ -34,7 +34,7 @@
 ### gateway
     网关功能
     1. 提供消息转发
-    2. 每个消息id都可以定义一个负载策略，具体查看com.tt.core.message.MessageEntry类
+    2. 每个消息id都可以定义一个负载策略，具体查看com.tt.core.message.MessageManager类
 
 ### RpcTest
     测试
