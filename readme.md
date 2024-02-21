@@ -7,9 +7,9 @@
     5. 提供网关功能，实现rpc消息的负载均衡
 
 ## 网络结构图
-
+![My Image](doc/网络结构图.png)
 ## rpc调用时序图
-    
+![My Image](doc/rpc调用时序图.png)
 
 ## 模块描述
 
