@@ -6,7 +6,10 @@
     4. 支持服务器同时为调用方和rpc提供方
     5. 提供网关功能，实现rpc消息的负载均衡
 
-## 系统架构图
+## 网络结构图
+
+## rpc调用时序图
+    
 
 ## 模块描述
 
@@ -25,12 +28,17 @@
     2. 实现网络通讯，包名：com.tt.core.net
     3. 提供rpc消息代理，包名：com.tt.core.proxy
     4. 提供网关的负载均衡，目前仅支持一致性hash，包名：com.tt.core.gatelb
-    5. 提供无锁队列和有序线程池，包名：[message](https://github.com/aoMao/rpc/tree/master/core/src/main/java/com/tt/core/message)
+    5. 提供无锁队列和有序线程池，包名：com.tt.core.thread
     6. 实现消息注册，包名：com.tt.core.message
 
 ### gateway
     网关功能
     1. 提供消息转发
     2. 每个消息id都可以定义一个负载策略，具体查看com.tt.core.message.MessageEntry类
-    3. 
+
+### RpcTest
+    测试
+
+### RpcTest1
+    测试1
     
